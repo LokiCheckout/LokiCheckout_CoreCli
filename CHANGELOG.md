@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 22 July 2025
-### Added
-- Initial release
+## [1.0.0] - 22 July 2025
+### Fixed
+- Move CLI from core module
+- Init files
+- Adding all files to git via Yireo Command
