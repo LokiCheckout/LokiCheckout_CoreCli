@@ -6,19 +6,6 @@
          bootstrap="./framework/bootstrap.php"
          stderr="true"
 >
-    <coverage>
-        <include>
-            <directory suffix=".php">../../../vendor/loki-checkout/magento2-core-cli/*</directory>
-        </include>
-        <exclude>
-            <directory>../../../vendor/loki-checkout/magento2-core-cli/Test/*</directory>
-        </exclude>
-    </coverage>
-    <testsuites>
-        <testsuite name="LokiCheckout_CoreCli">
-           <directory>../../../vendor/loki-checkout/magento2-core-cli/Test/Unit</directory>
-        </testsuite>
-    </testsuites>
     <php>
         <includePath>.</includePath>
         <includePath>testsuite</includePath>
