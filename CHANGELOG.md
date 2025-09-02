@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 02 September 2025
+### Fixed
+- Add CI files
+- Replace yireo/opensearch with yireo/opensearch-dummy in Gitlab CI
+
 ## [1.0.3] - 19 August 2025
 ### Fixed
 - Lower requirements to PHP 8.1
