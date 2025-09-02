@@ -1,0 +1,8 @@
+{
+    "modules": [
+        "LokiCheckout_Core"
+    ],
+    "components": [],
+    "config": [],
+    "tests": []
+}
