@@ -41,7 +41,7 @@ class DumpModulesCommand extends Command
         }
 
         $directoryWrite = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
-        $directoryWrite->writeFile('etc/loki-checkout.json', json_encode($data, JSON_PRETTY_PRINT));
+        $directoryWrite->writeFile('etc/loki-checkout.json', json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 
         return Command::SUCCESS;
     }
