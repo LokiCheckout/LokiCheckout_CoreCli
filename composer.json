@@ -4,9 +4,9 @@
     "description": "N/A",
     "type": "magento2-module",
     "require": {
-        "magento/framework": "^103.0",
+        "ext-json": "*",
         "loki-checkout/magento2-core": "^2.0",
-        "ext-json": "*"
+        "magento/framework": "^103.0"
     },
     "license": [
         "OSL-3.0"
