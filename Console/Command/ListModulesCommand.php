@@ -29,7 +29,7 @@ class ListModulesCommand extends Command
         $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Format', 'table');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $format = (string)$input->getOption('format');
 
