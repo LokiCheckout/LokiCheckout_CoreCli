@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 22 October 2025
+### Fixed
+- Remove int return type from Symfony commands for Symfony 5 compat
+- Update README
+
 ## [1.0.5] - 16 September 2025
 ### Fixed
 - Remove slashes from paths in app/etc/loki-checkout.json
