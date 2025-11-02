@@ -1,12 +1,12 @@
 {
-    "name": "loki-checkout\/magento2-core-cli",
+    "name": "loki-checkout/magento2-core-cli",
     "version": "1.0.6",
-    "description": "N\/A",
+    "description": "N/A",
     "type": "magento2-module",
     "require": {
         "ext-json": "*",
-        "loki-checkout\/magento2-core": "^2.0",
-        "magento\/framework": "^103.0"
+        "loki-checkout/magento2-core": "^2.0",
+        "magento/framework": "^103.0"
     },
     "license": [
         "OSL-3.0"
@@ -19,5 +19,8 @@
             "LokiCheckout\\CoreCli\\": ""
         }
     },
-    "keywords": []
+    "keywords": [
+        "loki-checkout",
+        "loki-checkout-core"
+    ]
 }
