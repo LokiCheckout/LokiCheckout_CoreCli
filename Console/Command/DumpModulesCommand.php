@@ -18,6 +18,7 @@ class DumpModulesCommand extends Command
         private readonly ComponentRegistrar $componentRegistrar,
         private readonly ModuleManager $moduleManager,
         private readonly Filesystem $filesystem,
+        private readonly DirectoryList $directoryList,
         ?string $name = null
     ) {
         parent::__construct($name);
@@ -36,7 +37,7 @@ class DumpModulesCommand extends Command
             $data[] = [
                 'name' => $module,
                 'enabled' => (int)$this->moduleManager->isEnabled($module),
-                'path' => $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $module),
+                'path' => $this->getRelativePath($module),
             ];
         }
 
@@ -44,5 +45,11 @@ class DumpModulesCommand extends Command
         $directoryWrite->writeFile('etc/loki-checkout.json', json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 
         return Command::SUCCESS;
+    }
+
+    private function getRelativePath(string $moduleName): string
+    {
+        $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
+        return str_replace($this->directoryList->getRoot(), '', $modulePath);
     }
 }
