@@ -23,6 +23,7 @@
         "Magento_Sales",
         "Magento_Shipping",
         "Magento_Store",
+        "Magento_Tax",
         "Magento_Vault",
         "Yireo_CspUtilities"
     ],
