@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.8] - 24 February 2026
+### Fixed
+- Make sure to remove the slash as well
+
 ## [1.0.7] - 12 February 2026
 ### Fixed
 - Add modules with their relative paths if possible
