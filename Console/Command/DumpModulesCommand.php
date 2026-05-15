@@ -30,7 +30,7 @@ class DumpModulesCommand extends Command
         $this->setDescription('Dump all registered Loki Checkout modules to app/etc/loki-checkout.json.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $data = [];
         foreach ($this->lokiCheckoutModules->getActiveModules() as $module) {
