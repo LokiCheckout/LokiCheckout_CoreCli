@@ -6,7 +6,6 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use JsonException;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Exception\FileSystemException;
-use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\Module\Manager as ModuleManager;
@@ -61,7 +60,7 @@ class DumpModulesCommand extends Command
             $directoryWrite->writeFile($tmpFile, $json);
             $directoryWrite->renameFile($tmpFile, self::FILE);
             $directoryWrite->changePermissions(self::FILE, 0666 & ~umask());
-        } catch (FileSystemException|ValidatorException $exception) {
+        } catch (FileSystemException $exception) {
             $this->deleteFile($directoryWrite, $tmpFile);
             $output->writeln('<error>Unable to write app/'.self::FILE.': '.$exception->getMessage().'</error>');
             return Command::FAILURE;
@@ -76,7 +75,7 @@ class DumpModulesCommand extends Command
     {
         try {
             $directoryWrite->delete($file);
-        } catch (FileSystemException|ValidatorException) {
+        } catch (FileSystemException) {
             return;
         }
     }
