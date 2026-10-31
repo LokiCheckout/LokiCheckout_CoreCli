@@ -49,7 +49,12 @@ class DumpModulesCommand extends Command
 
     private function getRelativePath(string $moduleName): string
     {
-        $modulePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
-        return str_replace($this->directoryList->getRoot().'/', '', $modulePath);
+        $modulePath = (string)$this->componentRegistrar->getPath(ComponentRegistrar::MODULE, $moduleName);
+        $root = rtrim($this->directoryList->getRoot(), '/').'/';
+        if (str_starts_with($modulePath, $root)) {
+            return substr($modulePath, strlen($root));
+        }
+
+        return $modulePath;
     }
 }
