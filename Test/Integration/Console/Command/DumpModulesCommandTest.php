@@ -51,6 +51,7 @@ final class DumpModulesCommandTest extends TestCase
 
         $this->assertSame(Command::SUCCESS, $tester->execute([]));
         $this->assertSame(['loki-checkout.json'], $this->getEtcFiles());
+        $this->assertSame(0, fileperms($this->getJsonFile()) & 0111, 'JSON file must not be executable');
 
         $data = json_decode((string)file_get_contents($this->getJsonFile()), true, 512, JSON_THROW_ON_ERROR);
         $modules = array_column($data, null, 'name');
