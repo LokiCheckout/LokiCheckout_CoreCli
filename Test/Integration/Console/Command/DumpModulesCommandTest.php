@@ -83,7 +83,7 @@ final class DumpModulesCommandTest extends TestCase
 
     private function createCommand(array $arguments = []): DumpModulesCommand
     {
-        $directoryList = new DirectoryList(BP, [
+        $directoryList = new DirectoryList($this->om()->get(DirectoryList::class)->getRoot(), [
             DirectoryList::APP => [DirectoryList::PATH => $this->appFolder],
         ]);
 
