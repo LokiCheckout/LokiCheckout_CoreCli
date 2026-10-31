@@ -2,6 +2,7 @@
 
 namespace LokiCheckout\CoreCli\Console\Command;
 
+use JsonException;
 use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Module\Manager as ModuleManager;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +27,7 @@ class ListModulesCommand extends Command
     {
         $this->setName('loki-checkout:modules:list');
         $this->setDescription('Show a listing of all registered Loki Checkout modules.');
-        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'Format', 'table');
+        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'Format (table or json)', 'table');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -34,17 +35,20 @@ class ListModulesCommand extends Command
         $format = (string)$input->getOption('format');
 
         if ($format === 'json') {
-            $this->renderJson($output);
+            return $this->renderJson($output);
         }
 
         if ($format === 'table') {
             $this->renderTable($output);
+            return Command::SUCCESS;
         }
 
-        return Command::SUCCESS;
+        $output->writeln('<error>Invalid format "'.$format.'", use "table" or "json"</error>');
+
+        return Command::INVALID;
     }
 
-    private function renderTable(OutputInterface $output)
+    private function renderTable(OutputInterface $output): void
     {
         $table = new Table($output);
         $table->setHeaders(['Module', 'Status', 'Path']);
@@ -60,7 +64,7 @@ class ListModulesCommand extends Command
         $table->render();
     }
 
-    private function renderJson(OutputInterface $output)
+    private function renderJson(OutputInterface $output): int
     {
         $data = [];
         foreach ($this->lokiCheckoutModules->getModules() as $module) {
@@ -71,6 +75,13 @@ class ListModulesCommand extends Command
             ];
         }
 
-        $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
+        try {
+            $output->writeln(json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR));
+        } catch (JsonException $exception) {
+            $output->writeln('<error>Unable to encode module listing: '.$exception->getMessage().'</error>');
+            return Command::FAILURE;
+        }
+
+        return Command::SUCCESS;
     }
 }
