@@ -60,6 +60,7 @@ class DumpModulesCommand extends Command
         try {
             $directoryWrite->writeFile($tmpFile, $json);
             $directoryWrite->renameFile($tmpFile, self::FILE);
+            $directoryWrite->changePermissions(self::FILE, 0666 & ~umask());
         } catch (FileSystemException|ValidatorException $exception) {
             $this->deleteFile($directoryWrite, $tmpFile);
             $output->writeln('<error>Unable to write app/'.self::FILE.': '.$exception->getMessage().'</error>');
