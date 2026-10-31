@@ -3,8 +3,12 @@
 namespace LokiCheckout\CoreCli\Console\Command;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
+use JsonException;
 use Magento\Framework\Component\ComponentRegistrar;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\WriteInterface;
 use Magento\Framework\Module\Manager as ModuleManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,6 +17,8 @@ use LokiCheckout\Core\Config\LokiCheckoutModules;
 
 class DumpModulesCommand extends Command
 {
+    private const FILE = 'etc/loki-checkout.json';
+
     public function __construct(
         private readonly LokiCheckoutModules $lokiCheckoutModules,
         private readonly ComponentRegistrar $componentRegistrar,
@@ -41,10 +47,37 @@ class DumpModulesCommand extends Command
             ];
         }
 
+        try {
+            $json = json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            $output->writeln('<error>Unable to encode module listing: '.$exception->getMessage().'</error>');
+            return Command::FAILURE;
+        }
+
         $directoryWrite = $this->filesystem->getDirectoryWrite(DirectoryList::APP);
-        $directoryWrite->writeFile('etc/loki-checkout.json', json_encode($data, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+        $tmpFile = self::FILE.'.'.bin2hex(random_bytes(6)).'.tmp';
+
+        try {
+            $directoryWrite->writeFile($tmpFile, $json);
+            $directoryWrite->renameFile($tmpFile, self::FILE);
+        } catch (FileSystemException|ValidatorException $exception) {
+            $this->deleteFile($directoryWrite, $tmpFile);
+            $output->writeln('<error>Unable to write app/'.self::FILE.': '.$exception->getMessage().'</error>');
+            return Command::FAILURE;
+        }
+
+        $output->writeln(sprintf('Dumped %d modules to app/%s', count($data), self::FILE));
 
         return Command::SUCCESS;
+    }
+
+    private function deleteFile(WriteInterface $directoryWrite, string $file): void
+    {
+        try {
+            $directoryWrite->delete($file);
+        } catch (FileSystemException|ValidatorException) {
+            return;
+        }
     }
 
     private function getRelativePath(string $moduleName): string
