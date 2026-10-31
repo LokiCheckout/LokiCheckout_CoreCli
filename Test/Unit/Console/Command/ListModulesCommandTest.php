@@ -8,7 +8,7 @@ use Magento\Framework\Component\ComponentRegistrar;
 use Magento\Framework\Module\Manager as ModuleManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class ListModulesCommandTest extends TestCase
@@ -48,7 +48,8 @@ final class ListModulesCommandTest extends TestCase
     {
         $tester = $this->createTester(['LokiCheckout_Foo' => '/var/www/vendor/foo']);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(ExceptionInterface::class);
+        $this->expectExceptionMessage('"--format" option requires a value');
         $tester->execute(['--format' => null]);
     }
 
