@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.10] - 06 November 2026
+### Fixed
+- Only catch filesystem exceptions declared by the write directory
+- Keep the dumped JSON file non-executable after the atomic rename
+- Check that the dumped JSON file is not executable
+- Reject unknown list formats and fail on JSON encoding errors
+- Accept any Symfony console exception for a missing format value
+- Write app/etc/loki-checkout.json atomically and fail on encoding or write errors
+- Only strip the Magento root from the start of module paths
+
 ## [1.0.9] - 15 May 2026
 ### Fixed
 - Fix Symfony 7 console command compat
